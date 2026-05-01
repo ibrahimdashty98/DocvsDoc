@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Medical Quiz Game</title>
+<style>
+body { font-family: Arial; background:#0f172a; color:white; text-align:center; }
+.container { max-width:600px; margin:auto; padding:20px; }
+.question { font-size:20px; margin:20px 0; }
+.btn {
+  display:block; margin:10px auto; padding:10px;
+  background:#1e293b; border:none; color:white; width:100%;
+  cursor:pointer; border-radius:8px;
+}
+.btn:hover { background:#334155; }
+.correct { background:green !important; }
+.wrong { background:red !important; }
+</style>
+</head>
+
+<body>
+<div class="container">
+<h1>🦷 Medical Quiz</h1>
+<div id="score">Score: 0</div>
+<div id="timer">Time: 15</div>
+
+<div class="question" id="question"></div>
+<div id="answers"></div>
+
+<button onclick="nextQuestion()" class="btn">Next</button>
+</div>
+
+<script>
+
+let questions = [
+{
+q: "What is the most common cause of pulpitis?",
+a: ["Trauma", "Caries", "Attrition", "Erosion"],
+correct: 1
+},
+{
+q: "Which nerve supplies mandibular teeth?",
+a: ["Maxillary nerve", "Inferior alveolar nerve", "Facial nerve", "Lingual nerve"],
+correct: 1
+},
+{
+q: "First step in RCT?",
+a: ["Obturation", "Access cavity", "Irrigation", "Filling"],
+correct: 1
+}
+];
+
+let current = 0;
+let score = 0;
+let time = 15;
+let timer;
+
+function startTimer(){
+time = 15;
+document.getElementById("timer").innerText = "Time: " + time;
+
+timer = setInterval(()=>{
+time--;
+document.getElementById("timer").innerText = "Time: " + time;
+
+if(time === 0){
+clearInterval(timer);
+nextQuestion();
+}
+},1000);
+}
+
+function loadQuestion(){
+clearInterval(timer);
+
+let q = questions[current];
+document.getElementById("question").innerText = q.q;
+
+let answersDiv = document.getElementById("answers");
+answersDiv.innerHTML = "";
+
+q.a.forEach((ans, index)=>{
+let btn = document.createElement("button");
+btn.innerText = ans;
+btn.className = "btn";
+btn.onclick = ()=>checkAnswer(index, btn);
+answersDiv.appendChild(btn);
+});
+
+startTimer();
+}
+
+function checkAnswer(index, btn){
+clearInterval(timer);
+
+let correct = questions[current].correct;
+
+if(index === correct){
+btn.classList.add("correct");
+score++;
+document.getElementById("score").innerText = "Score: " + score;
+}else{
+btn.classList.add("wrong");
+}
+
+setTimeout(nextQuestion, 1000);
+}
+
+function nextQuestion(){
+current++;
+if(current >= questions.length){
+alert("Game Over! Score: " + score);
+location.reload();
+return;
+}
+loadQuestion();
+}
+
+loadQuestion();
+
+</script>
+</body>
+</html>
