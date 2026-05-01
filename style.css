@@ -1,0 +1,18 @@
+body {
+  background:#0f172a;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+}
+
+button {
+  margin:5px;
+  padding:10px;
+  border:none;
+  background:#1e293b;
+  color:white;
+  cursor:pointer;
+}
+
+.correct { background:green; }
+.wrong { background:red; }
